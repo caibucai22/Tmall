@@ -6,7 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1f3b7de-5dbf-42d6-bf50-de51531279d6" name="Default Changelist" comment="" />
+    <list default="true" id="a1f3b7de-5dbf-42d6-bf50-de51531279d6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitingore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -347,11 +350,13 @@
       <workItem from="1633526650952" duration="900000" />
       <workItem from="1633590407925" duration="494000" />
       <workItem from="1633590923882" duration="821000" />
+      <workItem from="1633590923882" duration="344000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="76062000" />
+    <option name="totallyTimeSpent" value="75585000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
