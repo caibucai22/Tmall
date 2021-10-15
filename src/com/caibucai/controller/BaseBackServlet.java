@@ -1,7 +1,8 @@
 package com.caibucai.controller;
 
-import com.caibucai.dao.UserDao;
-import com.caibucai.dao.impl.UserDaoImpl;
+import com.caibucai.bean.ProductImage;
+import com.caibucai.dao.*;
+import com.caibucai.dao.impl.*;
 import com.caibucai.utils.Page;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,4 +56,12 @@ public abstract class BaseBackServlet {
 
 
     protected UserDao userDao = new UserDaoImpl();
+    protected ReviewDao reviewDao = new ReviewDaoImpl();
+    protected PropertyValueDao propertyValueDao = new PropertyValueDaoImpl();
+    protected PropertyDao propertyDao = new PropertyDaoImpl();
+    protected ProductDao productDao = new ProductDaoImpl();
+    protected ProductImageDao productImageDao = new ProductImageDaoImpl();
+    protected OrderItemDao orderItemDao = new OrderItemDaoImpl();
+    protected OrderDao orderDao = new OrderDaoImpl();
+    protected CategoryDao categoryDao = new CategoryDaoImpl();
 }

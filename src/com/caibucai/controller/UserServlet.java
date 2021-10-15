@@ -1,9 +1,11 @@
 package com.caibucai.controller;
 
+import com.caibucai.bean.User;
 import com.caibucai.utils.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author Csy
@@ -35,6 +37,13 @@ public class UserServlet extends BaseBackServlet {
 
     @Override
     public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-        return null;
+        List<User> users = userDao.list(page.getStart(),page.getCount());
+        int total = userDao.getToatal();
+        page.setTotal(total);
+
+
+        request.setAttribute("users",users);
+        request.setAttribute("page",page);
+        return "admin/listUser.jsp";
     }
 }
