@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -95,7 +96,27 @@ public class ProductImageServlet extends BaseBackServlet {
 
     @Override
     public String delete(HttpServletRequest request, HttpServletResponse response, Page page) {
-        return null;
+        int id = Integer.parseInt(request.getParameter("id"));
+        ProductImage pi = productImageDao.get(id);
+        productImageDao.delete(id);
+
+        if(ProductImageDao.type_single.equals(pi.getType())){
+            String imageFolder_single = request.getSession().getServletContext().getRealPath("img/productSingle");
+            String imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
+            String imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+
+            File f_single = new File(imageFolder_single,pi.getId()+".jpg");
+            f_single.delete();
+            File f_small = new File(imageFolder_small,pi.getId()+".jpg");
+            f_small.delete();
+            File f_middle = new File(imageFolder_middle,pi.getId()+".jpg");
+            f_middle.delete();
+        }else{
+            String imageFolder_detail = request.getSession().getServletContext().getRealPath("img/productDetail");
+            File f_detail = new File(imageFolder_detail,pi.getId()+".jpg");
+            f_detail.delete();
+        }
+        return "@admin_productImage_list?pid="+pi.getProduct();
     }
 
     @Override
@@ -110,6 +131,15 @@ public class ProductImageServlet extends BaseBackServlet {
 
     @Override
     public String list(HttpServletRequest request, HttpServletResponse response, Page page) {
-        return null;
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        Product p = productDao.get(pid);
+        List<ProductImage> pisSingle = productImageDao.list(p,ProductImageDao.type_single);
+        List<ProductImage> pisDetail = productImageDao.list(p,ProductImageDao.type_detail);
+
+        request.setAttribute("p",p);
+        request.setAttribute("pisSingle",pisSingle);
+        request.setAttribute("pisDetail",pisDetail);
+
+        return "admin/listProductImage.jsp";
     }
 }
