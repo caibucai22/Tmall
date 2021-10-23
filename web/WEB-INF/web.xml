@@ -4,6 +4,61 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <servlet>
+        <servlet-name>CategoryServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.CategoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/categoryServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PropertyServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.PropertyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PropertyServlet</servlet-name>
+        <url-pattern>/propertyServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.ProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/productServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProductImageServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.ProductImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductImageServlet</servlet-name>
+        <url-pattern>/productImageServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/userServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.caibucai.controller.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orderServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
         <servlet-name>ForeServlet</servlet-name>
         <servlet-class>com.caibucai.controller.ForeServlet</servlet-class>
     </servlet>
@@ -24,11 +79,30 @@
     </filter-mapping>
 
     <filter>
+        <filter-name>ForeAuthFilter</filter-name>
+        <filter-class>com.caibucai.filter.ForeAuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ForeAuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>ForeServletFilter</filter-name>
         <filter-class>com.caibucai.filter.ForeServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>ForeServletFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>BackServletFilter</filter-name>
+        <filter-class>com.caibucai.filter.BackServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>BackServletFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
