@@ -112,11 +112,12 @@ public class ProductDaoImpl implements ProductDao {
         Product product = null;
         try {
             connection = DBUtil.getConnection();
-            String sql = "select * from where id = " + id;
+            String sql = "select * from Product where id = " + id;
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                product = new Product();
                 String name = rs.getString("name");
                 String subTitle = rs.getString("subTitle");
                 double originalPrice = rs.getDouble("originalPrice");

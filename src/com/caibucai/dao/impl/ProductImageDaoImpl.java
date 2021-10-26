@@ -126,7 +126,7 @@ public class ProductImageDaoImpl implements ProductImageDao {
         ResultSet rs = null;
         try {
             connection = DBUtil.getConnection();
-            String sql = "select * from ProductImage where pid=? and type=? order by desc limit ?,?";
+            String sql = "select * from ProductImage where pid=? and type=? order by id desc limit ?,?";
             ps = connection.prepareStatement(sql);
             ps.setInt(1,p.getId());
             ps.setString(2,type);

@@ -172,6 +172,7 @@ public class UserDaoImpl implements UserDao {
             connection = DBUtil.getConnection();
             String sql = "select * from User where id=?";
             ps = connection.prepareStatement(sql);
+            ps.setInt(1,id);
             rs = ps.executeQuery();
             if(rs.next()){
                 user = new User();

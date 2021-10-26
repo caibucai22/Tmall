@@ -36,19 +36,22 @@ public class DBUtil {
 
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection(){
         Connection connection = null;
 
             String jdbcUrl = properties.getProperty("jdbc.url");
             String username = properties.getProperty("jdbc.username");
             String password = properties.getProperty("jdbc.password");
-
-            // 得到数据库连接
-            String url = String.format(jdbcUrl + "?characterEncoding=%s", "UTF-8");
+            try {
+                // 得到数据库连接
+                String url = String.format(jdbcUrl + "?characterEncoding=%s", "UTF-8");
 
 //            System.out.println(url);
 
-            connection = DriverManager.getConnection(url, username, password);
+                connection = DriverManager.getConnection(url, username, password);
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
 
 
         return connection;
