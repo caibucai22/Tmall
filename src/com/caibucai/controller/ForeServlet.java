@@ -10,6 +10,9 @@ import org.springframework.web.util.HtmlUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -132,5 +135,116 @@ public class ForeServlet extends BaseForeServlet {
     }
 
 
+    public String category(HttpServletRequest request,HttpServletResponse response,Page page){
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        Category category = new CategoryDaoImpl().get(cid);
+        new ProductDaoImpl().fill(category);
+        new ProductDaoImpl().setSaleAndReviewNumber(category.getProducts());
 
+        String sort = request.getParameter("sort");
+        if(null!=sort){
+            switch (sort){
+                case "review":
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o2.getReviewCount()-o1.getReviewCount();
+                        }
+                    });
+                    break;
+                case "date":
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getCreateDate().compareTo(o2.getCreateDate());
+                        }
+                    });
+                    break;
+                case "saleCount":
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getSaleCount()-o2.getSaleCount();
+                        }
+                    });
+                    break;
+                case "price":
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return (int)(o1.getPromotePrice()-o2.getPromotePrice());
+                        }
+                    });
+                    break;
+                case "all":
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getReviewCount()*o1.getSaleCount()
+                                    -o2.getReviewCount()*o2.getSaleCount();
+                        }
+                    });
+                    break;
+                    default:
+                        break;
+            }
+        }
+        request.setAttribute("category",category);
+        return "category.jsp";
+    }
+
+    public String search(HttpServletRequest request,HttpServletResponse response,Page page){
+        String keyword = request.getParameter("keyword");
+        List<Product> products = new ProductDaoImpl().search(keyword,0,20);
+        request.setAttribute("ps",products);
+        return "searchResult.jsp";
+    }
+
+    /**
+     * 购买
+     */
+    public String buyone(HttpServletRequest request,HttpServletResponse response,Page page){
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        int num = Integer.parseInt(request.getParameter("num"));
+        Product p = productDao.get(pid);
+        int orderItemId = 0;
+
+        // 如果该商品已经购买过，则进行遍历找到，数量加一
+        User user = (User) request.getSession().getAttribute("user");
+        boolean found = false;
+        List<OrderItem> orderItems = orderItemDao.listByUser(user.getId());
+        for (OrderItem orderItem : orderItems) {
+            if(orderItem.getProduct().getId() == p.getId()){
+                orderItem.setNumber(orderItem.getNumber()+num);
+                orderItemDao.update(orderItem);
+                found = true;
+            }
+        }
+
+        // 没买过，就创建新的订单项
+        if(!found){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setUser(user);
+            orderItem.setNumber(num);
+            orderItem.setProduct(p);
+            orderItemDao.add(orderItem);
+            orderItemId = orderItem.getId();
+        }
+        return "@forebuy?orderItemId="+orderItemId;
+    }
+
+    public String buy(HttpServletRequest request,HttpServletResponse response,Page page){
+        String[] oiids = request.getParameterValues("orderItemId");
+        List<OrderItem> orderItems = new ArrayList<>();
+        float total = 0;
+        for (String strid : oiids) {
+            int orderItemId = Integer.parseInt(strid);
+            OrderItem orderItem = orderItemDao.get(orderItemId);
+            total += orderItem.getProduct().getPromotePrice()*orderItem.getNumber();
+            orderItems.add(orderItem);
+        }
+        request.getSession().setAttribute("orderItems",orderItems);
+        request.setAttribute("total",total);
+        return "buy.jsp";
+    }
 }

@@ -20,6 +20,8 @@ public interface OrderItemDao {
 
     void delete(int id);
 
+    OrderItem get(int id);
+
     /**
      * ªÒ»°
      */

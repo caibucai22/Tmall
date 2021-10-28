@@ -3,13 +3,11 @@ package com.caibucai.dao.impl;
 import com.caibucai.bean.Order;
 import com.caibucai.bean.OrderItem;
 import com.caibucai.bean.Product;
+import com.caibucai.bean.User;
 import com.caibucai.dao.OrderItemDao;
 import com.caibucai.utils.DBUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +118,42 @@ public class OrderItemDaoImpl implements OrderItemDao {
         } finally {
             DBUtil.close(null, ps, connection);
         }
+    }
+
+    @Override
+    public OrderItem get(int id) {
+        OrderItem bean = new OrderItem();
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
+
+            String sql = "select * from OrderItem where id = " + id;
+
+            ResultSet rs = s.executeQuery(sql);
+
+            if (rs.next()) {
+                int pid = rs.getInt("pid");
+                int oid = rs.getInt("oid");
+                int uid = rs.getInt("uid");
+                int number = rs.getInt("number");
+                Product product = new ProductDaoImpl().get(pid);
+                User user = new UserDaoImpl().get(uid);
+                bean.setProduct(product);
+                bean.setUser(user);
+                bean.setNumber(number);
+
+                if (-1 != oid) {
+                    Order order = new OrderDaoImpl().get(oid);
+                    bean.setOrder(order);
+                }
+
+                bean.setId(id);
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return bean;
     }
 
     @Override
